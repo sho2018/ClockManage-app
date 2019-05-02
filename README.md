@@ -6,6 +6,12 @@
 
 ## 開発ルール
 1. git pullを使わない→git fetch + git mergeを使う
+2. 機能ごとに作業ブランチを細目にきる
+
+（例）
+- feature/add-login
+- feature/add-search-form
+3. 必ずコードレビューを受ける（プルリクエストを送る）
 
 ## 使用方法
 1. Nodejsのインストール
