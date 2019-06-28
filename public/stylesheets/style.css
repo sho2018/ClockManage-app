@@ -1,8 +1,105 @@
-body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+@charset "utf-8";
+
+header {
+    margin: 0 auto;
+    text-align: center;
+    padding-top: 10%;
 }
 
-a {
-  color: #00B7FF;
+main {
+    margin: 0 auto;
+    text-align: center;
+}
+
+footer {
+    bottom: 0;
+    width: 100%;
+    height: 100px;
+    text-align: center;
+    padding-top: 15%;
+}
+
+table {
+    margin: 0 auto;
+}
+th {
+    border: solid 2px;
+    padding: 0.5em;
+    text-align: center;
+}
+td {
+    border: solid 1px;
+    padding: 0.5em;
+}
+
+form {
+    padding-top: 40px;
+}
+
+#searchfrm {
+    margin-left: 10%;
+    padding-top: 0px;
+    text-align: left;
+}
+
+p {
+    margin: 15px auto 0 auto;
+}
+
+button.login {
+    width: 120px;
+    position: relative;
+    top: 25px;
+}
+
+button.back {
+    width: 120px;
+    text-align: center;
+    position: absolute;
+    margin-left: 80%;
+    top: 25px;
+}
+
+button.new {
+    width: 120px;
+    text-align: center;
+    position: inherit;
+    color: white;
+    background-color: red;
+    border-color: red;
+}
+
+button.edit {
+    width: 80px;
+    text-align: center;
+    position: inherit;
+}
+
+button.delete {
+    width: 80px;
+    text-align: center;
+    position: inherit;
+}
+
+button.menberins {
+    width: 120px;
+    margin: 15px auto 0 auto;
+}
+
+#errormsg {
+    font-weight: bold;
+    color: red;
+}
+
+/**
+    暫定対応
+*/
+h3{
+    text-align: center;
+}
+/** タイトル */
+div.jconfirm-title-c{
+    text-align: center;
+    color: red;
+    font-weight: bold;
 }

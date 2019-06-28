@@ -1,21 +1,18 @@
 {
-  "name": "clockmanage-app",
+  "name": "clockmanage",
   "version": "0.0.0",
   "private": true,
   "scripts": {
     "start": "node ./bin/www"
   },
   "dependencies": {
-    "bookshelf": "^0.14.2",
-    "cookie-parser": "~1.4.3",
+    "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
-    "ejs": "~2.5.7",
-    "express": "~4.16.0",
-    "express-session": "^1.16.1",
-    "express-validator": "^5.3.1",
-    "http-errors": "~1.6.2",
-    "knex": "^0.16.5",
-    "morgan": "~1.9.0",
+    "ejs": "^2.6.2",
+    "express": "~4.16.1",
+    "http-errors": "~1.6.3",
+    "jquery-confirm": "^3.3.4",
+    "morgan": "~1.9.1",
     "mysql": "^2.17.1"
   }
 }
