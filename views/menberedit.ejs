@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" />
+
+    <!--    bootstrap に reboot があるため、コメントアウト-->
+    <!--    <link rel='stylesheet' href='/stylesheets/reboot.css' />-->
+    <link rel='stylesheet' href='/stylesheets/common.css' />
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+    <script src="http://www.cyokodog.net/jquery.ex-table-filter/jquery.ex-table-filter.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript">
+        $(function() {
+            $('.menberins').on('click', function() {
+
+                // input取得
+                var officeid = document.getElementsByName("officeid")[0].value;
+                var menberid = document.getElementsByName("menberid")[0].value;
+                var name = document.getElementsByName("name")[0].value;
+                var hireday = document.getElementsByName("hireday")[0].value;
+                var retireday = document.getElementsByName("retireday")[0].value;
+
+                // 入力チェック
+                // 事業所ID
+                var officeflg = false;
+                if (officeid == undefined ||
+                    officeid == "") {
+                    officeflg = true;
+                }
+                // メンバーID
+                var menberflg = false;
+                if (menberid == undefined ||
+                    menberid == "") {
+                    menberflg = true;
+                }
+                // 名前
+                var nameflg = false;
+                if (name == undefined ||
+                    name == "") {
+                    nameflg = true;
+                }
+                // 入所日
+                var hiredayflg = false;
+                if (hireday == undefined ||
+                    hireday == "") {
+                    hiredayflg = true;
+                }
+
+                // エラーメッセージ生成
+                var msg = "";
+                if (officeflg) {
+                    msg = msg + "事業所ID";
+                }
+                if (menberflg) {
+                    if (msg != "") {
+                        msg = msg + "と";
+                    }
+                    msg = msg + "メンバーID";
+                }
+                if (nameflg) {
+                    if (msg != "") {
+                        msg = msg + "と";
+                    }
+                    msg = msg + "名前";
+                }
+                if (hiredayflg) {
+                    if (msg != "") {
+                        msg = msg + "と";
+                    }
+                    msg = msg + "入所日";
+                }
+                if (msg != "") {
+                    msg = msg + "は入力してください。";
+                    $("#errormsg").text(msg);
+                    return;
+                }
+
+                // 登録確認画面
+                $.confirm({
+                    title: "登録確認画面",
+                    content: "入力内容を登録してもよろしいでしょうか？",
+                    buttons: {
+                        "OK": function() {
+
+                            // 送信データ
+                            var data = {
+                                officeid: officeid,
+                                menberid: menberid,
+                                name: name,
+                                hireday: hireday,
+                                retireday: retireday
+                            };
+
+                            $.post("http://localhost:3000/menberins", data, null, "html")
+                                //  doneは、通信に成功した時に実行される
+                                //  引数のdata1は、通信で取得したデータ
+                                .done(function(res, textStatus, jqXHR) {
+
+                                    // JavaScriptオブジェクトをJSONに変換
+                                    var resData = JSON.stringify(res);
+                                    console.log(resData); //コンソールにJSONが表示される
+                                    console.log("成功しました。");
+
+                                    // 登録完了確認画面
+                                    $.confirm({
+                                        title: "登録完了画面",
+                                        content: "入力内容の登録完了しました。",
+                                        buttons: {
+                                            "OK": function() {
+                                                // メンバー情報一覧画面へ遷移
+                                                document.location.href = "http://localhost:3000/menberlist";
+                                            },
+                                            "再編集": function() {
+                                                $(this).confirm("close");
+                                            }
+                                        }
+                                    });
+                                })
+                                // failは、通信に失敗した時に実行される
+                                .fail(function(jqXHR, textStatus, errorThrown) {
+                                    console.log("失敗しました。");
+                                    console.log("jqXHR.status:" + jqXHR.status);
+                                    console.log("textStatus:" + textStatus);
+                                    console.log("errorThrown:" + errorThrown);
+                                })
+                                // alwaysは、成功/失敗に関わらず実行される
+                                .always(function() {
+                                    console.log("完了しました。");
+                                });
+                        },
+                        "キャンセル": function() {
+                            $(this).confirm("close");
+                        }
+                    }
+                });
+            });
+        })
+
+    </script>
+
+    <title><%= title %></title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="page-header">
+            <h3>メンバー登録画面</h3>
+            <button class="back" onclick="history.back()">戻る</button>
+        </div>
+        <div id="insfrm" class="container-fluid">
+            <div class="row">
+                <p id="errormsg"></p>
+            </div>
+            <div class="row">
+                <p>
+                    　事業所ID：<input type="text" name="officeid" value="<%= officeid %>">
+                </p>
+            </div>
+            <div class="row">
+                <p>
+                    メンバーID：<input type="text" name="menberid" value="<%= menberid %>">
+                </p>
+            </div>
+            <div class="row">
+                <p>
+                    　　　名前：<input type="text" name="name" value="<%= name %>">
+                </p>
+            </div>
+            <div class="row">
+                <p>
+                    　　入社日：<input type="date" name="hireday" value="<%= hireday %>">
+                </p>
+            </div>
+            <div class="row">
+                <p>
+                    　　退社日：<input type="date" name="retireday" value="<%= retireday %>">
+                </p>
+            </div>
+            <div class="row">
+                <button class="menberins">登録</button>
+            </div>
+        </div>
+        <script type="text/javascript">
+            var office = document.getElementsByName("officeid")[0];
+            var officeid = office.value;
+            if (officeid != undefined &&
+                officeid != "") {
+                office.disabled = true;
+            }
+            var menber = document.getElementsByName("menberid")[0];
+            var menberid = office.value;
+            if (menberid != undefined &&
+                menberid != "") {
+                menber.disabled = true;
+            }
+
+        </script>
+    </div>
+</body>
+
+</html>

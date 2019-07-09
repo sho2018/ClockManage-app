@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" />
+
+    <!--    bootstrap に reboot があるため、コメントアウト-->
+    <!--        <link rel='stylesheet' href='/stylesheets/reboot.css' />-->
+    <link rel='stylesheet' href='/stylesheets/common.css' />
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+    <script src="http://www.cyokodog.net/jquery.ex-table-filter/jquery.ex-table-filter.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+
+    <title><%= title %></title>
+</head>
+
+<body>
+    <header>
+        <h2><%= title %></h2>
+    </header>
+    <main>
+        <form action="/menberlist" method="POST">
+            <% if (cnt <= 0) { %>
+            <p id="errormsg">
+                ログインID、もしくはパスワードが誤っています。
+            </p>
+            <% } %>
+            <p>
+                ログインID：<input type="text" name="loginid">
+            </p>
+            <p>
+                パスワード：<input type="password" name="password">
+            </p>
+            <button class="login">ログイン</button>
+        </form>
+    </main>
+    <footer>
+        <p>
+            ドリカム
+        </p>
+    </footer>
+</body>
+
+</html>

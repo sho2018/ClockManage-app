@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" />
+
+    <!--    bootstrap に reboot があるため、コメントアウト-->
+    <!--    <link rel='stylesheet' href='/stylesheets/reboot.css' />-->
+    <link rel='stylesheet' href='/stylesheets/common.css' />
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+    <script src="http://www.cyokodog.net/jquery.ex-table-filter/jquery.ex-table-filter.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script src='/javascripts/date.js'></script>
+
+    <script type="text/javascript">
+        $(function() {
+            $('.edit').on('click', function() {
+                var officeid = $(this).closest('tr').children("td")[0].innerText;
+                var menberid = $(this).closest('tr').children("td")[1].innerText;
+                var name = $(this).closest('tr').children("td")[2].innerText;
+                var hireday = $(this).closest('tr').children("td")[3].innerText;
+                var retireday = $(this).closest('tr').children("td")[4].innerText;
+
+                if (hireday != "") {
+                    hireday = hireday.split('/');
+                    hireday = hireday.join('-');
+                }
+                if (retireday != "") {
+                    retireday = retireday.split('/');
+                    retireday = retireday.join('-');
+                }
+
+                $('<form/>', {
+                        action: '/menberedit',
+                        method: 'post'
+                    })
+                    .append($('<input/>', {
+                        type: 'hidden',
+                        name: 'officeid',
+                        value: officeid
+                    }))
+                    .append($('<input/>', {
+                        type: 'hidden',
+                        name: 'menberid',
+                        value: menberid
+                    }))
+                    .append($('<input/>', {
+                        type: 'hidden',
+                        name: 'name',
+                        value: name
+                    }))
+                    .append($('<input/>', {
+                        type: 'hidden',
+                        name: 'hireday',
+                        value: hireday
+                    }))
+                    .append($('<input/>', {
+                        type: 'hidden',
+                        name: 'retireday',
+                        value: retireday
+                    }))
+                    .appendTo(document.body)
+                    .submit();
+            });
+            $('.new').on('click', function() {
+
+                $('<form/>', {
+                        action: '/menberedit',
+                        method: 'post'
+                    })
+                    .append($('<input/>', {
+                        type: 'hidden',
+                        name: 'officeid',
+                        value: ""
+                    }))
+                    .append($('<input/>', {
+                        type: 'hidden',
+                        name: 'menberid',
+                        value: ""
+                    }))
+                    .append($('<input/>', {
+                        type: 'hidden',
+                        name: 'name',
+                        value: ""
+                    }))
+                    .append($('<input/>', {
+                        type: 'hidden',
+                        name: 'hireday',
+                        value: ""
+                    }))
+                    .append($('<input/>', {
+                        type: 'hidden',
+                        name: 'retireday',
+                        value: ""
+                    }))
+                    .appendTo(document.body)
+                    .submit();
+            });
+            $('.delete').on('click', function() {
+
+                var officeid = $(this).closest('tr').children("td")[0].innerText;
+                var menberid = $(this).closest('tr').children("td")[1].innerText;
+                var name = $(this).closest('tr').children("td")[2].innerText;
+
+                // 削除確認画面
+                $.confirm({
+                    title: "削除確認画面",
+                    content: name + "さんを削除してもよろしいでしょうか？",
+                    buttons: {
+                        "OK": function() {
+
+                            // 送信データ
+                            var data = {
+                                officeid: officeid,
+                                menberid: menberid,
+                            };
+
+                            $.post("http://localhost:3000/menberdelete", data, null, "html")
+                                //  doneは、通信に成功した時に実行される
+                                //  引数のdata1は、通信で取得したデータ
+                                .done(function(res, textStatus, jqXHR) {
+
+                                    // JavaScriptオブジェクトをJSONに変換
+                                    var resData = JSON.stringify(res);
+                                    console.log(resData); //コンソールにJSONが表示される
+                                    console.log("成功しました。");
+                                })
+                                // failは、通信に失敗した時に実行される
+                                .fail(function(jqXHR, textStatus, errorThrown) {
+                                    console.log("失敗しました。");
+                                    console.log("jqXHR.status:" + jqXHR.status);
+                                    console.log("textStatus:" + textStatus);
+                                    console.log("errorThrown:" + errorThrown);
+                                })
+                                // alwaysは、成功/失敗に関わらず実行される
+                                .always(function() {
+                                    console.log("完了しました。");
+
+                                    // メンバー情報一覧画面へ遷移
+                                    document.location.href = "http://localhost:3000/menberlist";
+                                });
+                        },
+                        "キャンセル": function() {
+                            $(this).confirm("close");
+                        }
+                    }
+                });
+            });
+        })
+        jQuery(function($) {
+            $.extend($.fn.dataTable.defaults, {
+                language: {
+                    url: "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Japanese.json"
+                }
+            });
+            $('#menberlist').DataTable({
+                // 件数切替機能 無効
+                lengthChange: false,
+                // ソート機能 無効
+                ordering: false,
+                // 初期表示件数
+                pageLength: 10,
+            });
+        });
+
+    </script>
+
+    <title><%= title %></title>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="page-header">
+            <h3>メンバー情報</h3>
+            <button class="back" onclick="history.back()">戻る</button>
+        </div>
+        <div class="container-fluid">
+            <div class="row">
+                <table id="menberlist" class="stripe row-border">
+                    <thead>
+                        <tr>
+                            <th>事業所ID</th>
+                            <th>メンバーID</th>
+                            <th>名前</th>
+                            <th>入社日</th>
+                            <th>退社日</th>
+                            <th></th>
+                            <th><button class="new">新規登録</button></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% data.forEach(function (dataItem, index) { %>
+                        <tr>
+                            <td id="officeid"><%= dataItem.officeid %></td>
+                            <td id="menberid"><%= dataItem.menberid %></td>
+                            <td id="name"><%= dataItem.name %></td>
+                            <td id="hireday"><%= dataItem.hireday %></td>
+                            <td id="retireday"><%= dataItem.retireday %></td>
+                            <td><button class="edit">編集</button></td>
+                            <td><button class="delete">削除</button></td>
+                        </tr>
+                        <% }); %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

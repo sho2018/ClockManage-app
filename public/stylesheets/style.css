@@ -19,19 +19,6 @@ footer {
     padding-top: 15%;
 }
 
-table {
-    margin: 0 auto;
-}
-th {
-    border: solid 2px;
-    padding: 0.5em;
-    text-align: center;
-}
-td {
-    border: solid 1px;
-    padding: 0.5em;
-}
-
 form {
     padding-top: 40px;
 }
@@ -55,7 +42,6 @@ button.login {
 button.back {
     width: 120px;
     text-align: center;
-    position: absolute;
     margin-left: 80%;
     top: 25px;
 }
@@ -94,11 +80,20 @@ button.menberins {
 /**
     暫定対応
 */
-h3{
+.dataTables_wrapper {
+    width: 100%;
+}
+
+div#menberlist_filter.dataTables_filter {
+    float: left;
+}
+
+h3 {
     text-align: center;
 }
+
 /** タイトル */
-div.jconfirm-title-c{
+div.jconfirm-title-c {
     text-align: center;
     color: red;
     font-weight: bold;

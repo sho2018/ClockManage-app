@@ -1,0 +1,8 @@
+@charset "utf-8";
+
+/*クリアフィックス*/
+.cf::after {
+    content: "";
+    display: block;
+    clear: both;
+}
